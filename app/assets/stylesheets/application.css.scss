@@ -88,3 +88,14 @@ ul {
 .display {
 	display: block;
 }
+
+ul { list-style-type: none; margin: 0; padding: 0; margin-bottom: 10px; }
+li { margin: 5px; padding: 5px; width: 150px; }
+
+
+#form_done {
+	li {
+		color: #999;
+		font-size: 11px;
+	}
+}

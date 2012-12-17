@@ -1,15 +1,15 @@
 class ListsController < ApplicationController
   respond_to :html, :xml, :js
   def index
-    @lists = List.all
+    @lists = current_user.lists
   end  
   
   def new 
-    @list = List.new
+    @list = current_user.lists.new
   end
   
   def create
-    @list = List.new(params[:list])
+    @list = current_user.lists.new(params[:list])
     if @list.save
       flash[:notice] = "List created"
       redirect_to list_url(@list)
@@ -18,19 +18,20 @@ class ListsController < ApplicationController
       redirect_to new_list_url
     end
   end
-  
+    
   def show
-    @list = List.find(params[:id])
+    @list = current_user.lists.find(params[:id])
     @item = @list.items.new
     #render layout: false if params[:is_ajax] == true
   end
   
   def edit
-    @list = List.find(params[:id])
+    @list = current_user.lists.find(params[:id])
+    render :layout => false
   end
   
   def update
-    @list = List.find(params[:id])
+    @list = current_user.lists.find(params[:id])
     if @list.update_attributes(params[:list])
       flash[:notice] = "List updated"
       if params[:ajax] == "1"
@@ -49,7 +50,7 @@ class ListsController < ApplicationController
   end
   
   def destroy
-    @list = List.find(params[:id])
+    @list = current_user.lists.find(params[:id])
     if @list.destroy
       flash[:notice] = "List deleted"
       redirect_to lists_url
@@ -59,35 +60,5 @@ class ListsController < ApplicationController
     end
   end  
   
-  def show_form_create
-    @list = List.find(params[:id])
-    @item = @list.items.build(params[:item]) # use build instead of new.
-    render '_create_item.html.erb', :layout => false
-  end
-  
-  def mark_an_item_as_done
-    @list = List.find(params[:id])
-    @item = @list.items.find_by_id(params[:item_id])
-    @item.update_attribute(:completed, true)
-    render :text => "successful"
-  end
-  
-  def unmark_an_item
-    @list = List.find(params[:id])
-    @item = @list.items.find_by_id(params[:item_id])
-    @item.update_attribute(:completed, false)
-    render :text => "successful"
-  end    
-  
-  def reorder
-    @list = List.find(params[:id])
-    @item = @list.items.find_by_id(params[:item_id])
-    render :text =>"successful"
-  end 
-  
-  def done_reorder
-    @list = List.find(params[:id])
-    @list.update_attributes(params[:list])
-    render :text => "successful"
-  end              
+            
 end

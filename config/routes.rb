@@ -4,14 +4,21 @@ Listapp11::Application.routes.draw do
   devise_for :users
 
   resources :lists do
-    member do 
-      put :mark_an_item_as_done
-      put :unmark_an_item
-      put :show_form_create
-      put :reorder
-      put :done_reorder
-    end        
-    resources :items
+    resources :items do
+      collection do
+        get :undone
+      end
+      member do
+        put :mark_an_item_as_done
+        put :unmark_an_item
+      end
+      collection do
+        put :show_form_create
+        put :reorder
+        put :done_reorder
+        get :reorder
+      end            
+    end
   end  
   
   # map.resources :items, :collection => { :sort => :post }
