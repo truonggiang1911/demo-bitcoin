@@ -1,0 +1,90 @@
+/*
+* This is a manifest file that'll be compiled into application.css, which will include all the files
+* listed below.
+*
+* Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+* or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+*
+* You're free to add application-wide styles to this file and they'll appear at the top of the
+* compiled file, but it's generally better to create a new file per style scope.
+*
+*= require_self
+*= require_tree .
+*/
+
+@import "bourbon";
+body {
+  margin: 20px 0px 0px 20px;
+  padding: 0;
+  background-color: #FFF;
+  font-size: 14px;
+  font-family: $verdana;
+}
+ul {
+	li	{
+		list-style:none;
+	}
+}
+.header {
+	text-align: left;
+	padding: 8px;
+	float: left;
+	padding: 0 15px 0 0;
+	margin: 0 0 0 0;
+	line-height: 53px;
+	height: 50px;
+	width: 500px;
+	@include linear-gradient(#fff, #ccc);
+	@include box-shadow(1px 1px 5px 1px green, -1px -1px 5px 1px green);
+	@include background(linear-gradient(green, green) left repeat);
+	@include background(linear-gradient(green, green) left repeat, radial-gradient(red, orange) left repeat);
+}
+.mylist {
+  border: solid 1px #AAA;
+  margin: 20px 0;
+  padding: 7px 12px;
+  
+  @include transition(all, 500ms, ease-in-out);
+  
+  &:hover { background-color: #F8FCCF; }
+  
+  h2 {
+    margin: 0;
+    a { text-decoration: none; }
+  }
+}
+.content_list {
+	clear:left;
+	padding:10px;
+}
+
+.left {
+	float:left;
+}
+
+.right {
+	float:right;
+}
+
+.clear {
+	clear:both;
+}
+
+.drag_img {
+
+}
+.drag_img_none {
+	display:none;
+}
+
+.drag_img_show {
+	display:inline;
+}
+
+.display_none {
+	display: none;
+}
+
+.display {
+	display: block;
+}

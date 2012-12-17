@@ -1,0 +1,160 @@
+
+<% content_for :header do %>
+	<span><%= link_to "My Lists ", lists_url %><b>This list:</b></span>
+	<%= link_to "Edit", edit_list_url %> | <a href="#" class ="show_drag_img" > Reorder</a> <a href="#" class ="show_done_drag_img display_none"  >  I'm done Reorder</a>
+<% end %>
+
+<div class="content_list">
+<p><%= @list.name %></p>
+
+<%= form_for @list, :html => {:id => 'form_not_done'} do |list_form| %>
+<ul class='not_done' id ='not_done_list'>
+	<%= list_form.fields_for :items do |item_form_builder| %>
+	<% if item_form_builder.object.new_record? || item_form_builder.object.completed? %> 
+	<% else %>
+		<li >	<%= image_tag "drag.gif", :title => "title", :class => " drag_img drag_img_none" %>	
+			<%= item_form_builder.check_box :completed, class: "item-complete-checkbox", 'data-item-id' => item_form_builder.object.id, :checked => false %>					
+			<%= item_form_builder.object.name %>
+			<%= item_form_builder.hidden_field :name %>	
+			<%= item_form_builder.hidden_field :position, :value => item_form_builder.object.position, class: "item-hidden-field-position"%>
+		</li>
+	<% end %>		
+	<% end %>
+</ul>		
+<% end %>
+
+
+
+<div  sclass="slidingDiv" style="display:none">
+<%= form_for [@list, @item] do |form| %>
+	<p><%= form.text_field :name %> <%= form.submit %></p>
+<% end %>
+</div>
+
+<div id="result"></div>
+	
+<a href="#" class ="show_hide" > Add another item</a>
+<br>
+
+<%= form_for @list do |list_form| %>
+<ul class='done' id='done_list'>
+	<%= list_form.fields_for :items do |item_form_builder| %>
+	<% if item_form_builder.object.new_record? || item_form_builder.object.incompleted? %> 
+	<% else %>
+		<li >	<%= image_tag "drag.gif", :title => "title", :class => " drag_img drag_img_none" %>	
+			<%= item_form_builder.check_box :completed, class: "item-complete-checkbox", 'data-item-id' => item_form_builder.object.id, :checked => true %>					
+			<%= item_form_builder.object.name %>
+			<%= item_form_builder.hidden_field :name %>	
+			<%= item_form_builder.hidden_field :position, :value => item_form_builder.object.position, class: "item-hidden-field-position"%>
+		</li>
+	<% end %>		
+	<% end %>
+</ul>		
+<% end %>
+<%= link_to "back to all list", lists_url %>
+</div>
+<script language='javascript'>
+	$("a.show_drag_img").click(function(e){
+		$("a.show_drag_img").addClass("display_none");
+		$("a.show_done_drag_img").removeClass("display_none");
+		$("img.drag_img").removeClass('drag_img_none').addClass('drag_img_show');
+		$("#done_list").addClass('display_none');
+		$("a.show_hide").addClass('display_none');
+		$("#not_done_list").attr("id","not_done_list_drag");
+    $( "ul, li" ).disableSelection();
+		$("input.item-complete-checkbox").addClass('display_none');
+		$( "#not_done_list_drag" ).sortable({
+			stop: function( event, ui ) {
+				$("#not_done_list_drag").children('li').each(function(index){	
+					//console.log($(this).find(".item-hidden-field-position"));
+					$(this).find(".item-hidden-field-position").val(index++);		
+				});
+			}
+		});
+		return false;
+	});	
+</script>
+
+<script language='javascript'>
+	$("a.show_done_drag_img").click(function(e){
+		//$("form.edit_list").submit();
+		$("a.show_hide").removeClass('display_none');
+		var frm = $("form#form_not_done");
+		//console.log(frm.attr('action'));
+		$.ajax({
+			url: frm.attr('action'),
+			type: "PUT",
+			data: frm.serialize() + "&ajax=1",
+			success: function(res){
+				$("a.show_drag_img").removeClass("display_none");
+				$("a.show_done_drag_img").addClass("display_none");
+				$("img.drag_img").addClass('drag_img_none').removeClass('drag_img_show');
+				$("#done_list").removeClass('display_none');
+				$("input.item-complete-checkbox").removeClass('display_none');
+			}
+		});
+	
+		return false;
+	});	
+</script>
+
+<script language='javascript'>
+	$("a.show_hide").click(function(e) {
+	 	//id = #(this).attr("id");
+		//e.preventDefault();
+		$.ajax({
+			url: '/lists/<%= @list.id %>/show_form_create',
+			type: "PUT",
+			success: function(response){
+				//$(".slidingDiv").slideToggle();
+				$("#result").html(response);
+			}
+		});
+		return false;
+	});
+</script>
+
+<script language='javascript'>
+	$("input.item-complete-checkbox").change(function() {
+		var isChecked = $(this).attr('checked')
+		var self = $(this);
+		if(isChecked) {
+			$.ajax({
+				url: '/lists/<%= @list.id %>/mark_an_item_as_done',
+				type: "PUT",				
+				data: {item_id: self.data('item-id')},
+				success: function(response) {
+					if(response == "successful") {
+						$("img.drag_img").addClass('drag_img_none');
+						// this is a successful request, do something with this
+						self.parent().fadeOut(function() {
+							$("#done_list").append(self.parent().fadeIn());
+						})
+					}//end if
+				}
+			});
+		}//end if
+		else {
+			$.ajax({
+				url: '/lists/<%= @list.id %>/unmark_an_item',
+				type: "PUT",
+				data: {item_id: self.data('item-id')},
+				success: function(response) {
+					if(response == "successful"){			
+						//$("img.drag_img").removeClass('drag_img_none');
+						self.parent().fadeOut(function() {
+							$("#not_done_list").append(self.parent().fadeIn());
+						})
+					}
+				}
+			});
+		}//end else
+	});
+</script>
+
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+
+<style>
+  ul { list-style-type: none; margin: 0; padding: 0; margin-bottom: 10px; }
+  li { margin: 5px; padding: 5px; width: 150px; }
+</style>

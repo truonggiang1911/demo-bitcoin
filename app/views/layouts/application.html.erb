@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Listapp11</title>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+	<div class ="header">
+	  <div class="left">
+		<%= image_tag 'tada-mark-bg.gif' %>	
+		</div>
+		<div class="left">
+			<%= yield :header %>
+		</div>
+	</div>
+	<%= yield %>
+	
+</body>
+</html>
