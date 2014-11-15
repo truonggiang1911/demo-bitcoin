@@ -1,0 +1,23 @@
+<% content_for :header do %>
+	<b>Documents</b>
+<% end %>
+<div class="content_list">
+<span> Documents List </span>
+
+<% @documents.each do |document|%>
+	<div class="mylist">
+	<p> <%= link_to document.name, document_url(document) %> (<%=document.price %>)</p>
+    <p>
+        <a href="/order_payment?document_id=<%= document.id %>" class="input-submit-blue">Order now</a>
+    	<!-- <a href="/pay?document_id=<%= document.id %>" class="input-submit-blue">Pay now</a> -->
+    </p>
+    </div>
+    <!-- <div class="coinbase-button" data-code="2de7d25fb8de354c85cdcb251199a002">Pay now with bitcoin</div> -->
+<!--     <a class="coinbase-button" data-code="8dc7ab048865ffa36c0f93a07e3f7bc4" data-button-style="donation_large" href="https://coinbase.com/checkouts/8dc7ab048865ffa36c0f93a07e3f7bc4">Donate Bitcoins</a> -->
+
+ <!--    <div class="coinbase-button" data-code="40241f379212372754618a43aadf88d5">Donate Bitcoins 2</a>
+     <script src="https://coinbase.com/assets/button.js" type="text/javascript"></script>
+	</div> -->
+    
+<% end %>	
+</div>

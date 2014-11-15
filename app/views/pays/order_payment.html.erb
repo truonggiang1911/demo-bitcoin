@@ -1,0 +1,12 @@
+<%= semantic_form_for @document, :url => "/pay_with_bitcoin", :method => "POST" do |f| %>
+
+    <%= f.inputs do %>
+    	<%= f.input :id, :as => :hidden %>
+      <%= f.input :name %>
+      <%= f.input :price %>
+      <%= f.input :currency, :as => :select, :collection => [["BTC", "BTC"], ["USD", "USD"], ["VND", "VND"]]%>
+    <% end %>
+    <%= f.actions do %>
+      <%= f.action :submit, :as => :button, :label => "Pay with Bitcoin"%>
+    <% end %>	
+<% end %>

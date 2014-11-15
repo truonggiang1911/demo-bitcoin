@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  document_id: 1
+  is_payment_with_signature: false
+  payment_amount: 1.5
+  signer_id: 1
+
+two:
+  document_id: 1
+  is_payment_with_signature: false
+  payment_amount: 1.5
+  signer_id: 1
