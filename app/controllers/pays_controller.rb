@@ -2,7 +2,9 @@ class PaysController < ApplicationController
 
 	#config SECRET_TOKEN_APP for 3 environment
     SECRET_TOKEN_APP = "g8u4f4834grghu9hteruhe0ugldr88"
+	
 	before_filter :check_secret_token_callback, :only => [:pay_callback, :pay_cancel]
+	
 	def order_payment
 		@document = Document.find_by_id(params[:document_id])
 	end	
@@ -19,6 +21,12 @@ class PaysController < ApplicationController
 		    	:refresh_token => 'refresh_token',
 		    	:expires_at => Time.now + 1.day
 			}
+
+			# need to Set up callback_url, success_url, cancel_url for 3 enviroments
+			# and get them by EVN[..]
+
+			# if want to config options for button. Please flow the this link to see more details
+			# https://www.coinbase.com/api/doc/1.0/buttons/create.html
 
 	 		options = { button: 
 	 				  	{
@@ -61,6 +69,11 @@ class PaysController < ApplicationController
 	 	order = params[:order]
 	 	puts 22222
 	 	puts order.inspect
+
+        # this code below just check for case Order Callback Example
+	 	# May be you need to recheck one or more case for callback params
+	 	# Ex: Payout Callback Example
+	 	# Please see more detail https://www.coinbase.com/docs/merchant_tools/callbacks	
 	 	if (order.present? and order[:status] != "expired")
 	 		payment = Payment.new({
  				document_id: order[:custom],

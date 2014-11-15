@@ -9,7 +9,10 @@
 	- Can set SECRET_TOKEN_APP at pays_controller to filter action callback
 
 
-
+3. Set up callback_url, success_url, cancel_url for 3 enviroments
+	- Do same thing with step 1 or 2
+	- And go to pays_controller.rb to updated for them follow ENV['...']
+	
 == Using callback - can see more detail in routes.rb to match action of callback
 
 1. Callback when payment is successful - pay_callback
@@ -18,4 +21,4 @@
 	- When status is completed or mispaid - save data to Payment 
 2. Callback when payment is cancel - pay_cancel
 
-3.....
+
