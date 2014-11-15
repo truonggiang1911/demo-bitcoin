@@ -4,7 +4,7 @@
     	<%= f.input :id, :as => :hidden %>
       <%= f.input :name %>
       <%= f.input :price %>
-      <%= f.input :currency, :as => :select, :collection => [["BTC", "BTC"], ["USD", "USD"], ["VND", "VND"]]%>
+      <%= f.input :currency, :as => :select, :collection =>  Money::Currency.all.collect{|x| [x.iso_code, x.iso_code]}, :include_blank => "BTC"%>
     <% end %>
     <%= f.actions do %>
       <%= f.action :submit, :as => :button, :label => "Pay with Bitcoin"%>
