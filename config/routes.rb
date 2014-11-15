@@ -1,28 +1,19 @@
 Listapp11::Application.routes.draw do
-  
-
   devise_for :users
 
-  resources :lists do
-    resources :items do
-      collection do
-        get :undone
-      end
-      member do
-        put :mark_an_item_as_done
-        put :unmark_an_item
-      end
-      collection do
-        put :show_form_create
-        put :reorder
-        put :done_reorder
-        get :reorder
-      end            
-    end
+  resources :documents do
   end  
+
   
+  get '/order_payment', controller: "pays", action: "order_payment"
+  post '/pay_with_bitcoin', controller: "pays", action: "pay_with_bitcoin"
+  get '/pays/complete', controller: "pays", action: "complete"
+  match '/pays/pay_callback', controller: "pays", action: "pay_callback"
+  match '/pay_cancel', controller: "pays", action: "pay_callback"
+  get '/pays/pay_not_successful', controller: "pays", action: "pay_not_successful"
+  get '/pays/pay_thanks', controller: "pays", action: "pay_thanks"
   # map.resources :items, :collection => { :sort => :post }
-  root :to => "lists#index"
+  root :to => "documents#index"
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

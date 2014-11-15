@@ -5,7 +5,7 @@ gem 'rails', '3.2.9'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3'
+gem 'mysql2'
 
 
 # Gems used only for assets and not required
@@ -45,6 +45,7 @@ gem 'devise'
 group :development do
   gem 'quiet_assets'
 end
-
+gem 'formtastic', '2.3.0.rc2'
 gem 'bourbon'
 gem 'thin'
+gem 'coinbase', :git => 'git://github.com/coinbase/coinbase-ruby.git'
