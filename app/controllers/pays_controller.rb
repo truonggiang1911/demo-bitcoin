@@ -86,9 +86,9 @@ class PaysController < ApplicationController
 
 	 end	
 
-	 def pay_cancel
-	 	puts params.inpsect
-	 end	
+	 # def pay_cancel
+	 # 	puts params.inpsect
+	 # end	
 
 
 	 private
