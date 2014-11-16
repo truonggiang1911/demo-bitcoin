@@ -78,7 +78,10 @@ class PaysController < ApplicationController
 	 		payment = Payment.new({
  				document_id: order[:custom],
 	 			signer_id: current_user.id,
-	 			payment_amount: order[:total_btc][:cents],
+	 			payment_amount: order[:total_native][:cents],
+	 			bitcoin_total_btc: order[:total_btc][:cents],
+	 			bitcoin_total_native: order[:total_native][:cents],
+	 			bitcoin_total_payout: order[:total_payout][:cents],
 	 			bitcoin_transaction_id: order[:transaction][:id],
 	 			bitcoint_receive_address: order[:receive_address],
 	 			bitcoin_order_id: order[:id],
@@ -102,7 +105,7 @@ class PaysController < ApplicationController
 	 def pay_cancel
 
 	 	puts "222 go to pay cancel"
-	 	puts params.inpsect
+	 	puts params.inspect
 	 	# return to page to notify cancel payment
 	 	# or page for reorder
 	 	order = params[:order]
@@ -116,14 +119,20 @@ class PaysController < ApplicationController
 
 	 def pay_successful
 	 	puts "222 go to pay successful"
-	 	puts params.inpsect
+	 	puts params.inspect
+
+	 	#bitcoin_total_btc:float bitcoin_total_native:float bitcoin_total_payout:float
+
 	 	order = params[:order]
 
 	 	if (order.present? and order[:status] != "expired")
 	 		payment = Payment.new({
  				document_id: order[:custom],
 	 			signer_id: current_user.id,
-	 			payment_amount: order[:total_btc][:cents],
+	 			payment_amount: order[:total_native][:cents],
+	 			bitcoin_total_btc: order[:total_btc][:cents],
+	 			bitcoin_total_native: order[:total_native][:cents],
+	 			bitcoin_total_payout: order[:total_payout][:cents],
 	 			bitcoin_transaction_id: order[:transaction][:id],
 	 			bitcoint_receive_address: order[:receive_address],
 	 			bitcoin_order_id: order[:id],

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141115032704) do
+ActiveRecord::Schema.define(:version => 20141116104658) do
 
   create_table "documents", :force => true do |t|
     t.string   "name"
@@ -42,12 +42,15 @@ ActiveRecord::Schema.define(:version => 20141115032704) do
     t.boolean  "is_payment_with_signature"
     t.float    "payment_amount"
     t.integer  "signer_id"
-    t.datetime "created_at",                               :null => false
-    t.datetime "updated_at",                               :null => false
+    t.datetime "created_at",                                 :null => false
+    t.datetime "updated_at",                                 :null => false
     t.integer  "bitcoin_transaction_id",    :default => 0
     t.string   "bitcoint_receive_address"
     t.integer  "bitcoin_order_id",          :default => 0
     t.string   "bitcoin_status_order"
+    t.float    "bitcoin_total_btc",         :default => 0.0
+    t.float    "bitcoin_total_native",      :default => 0.0
+    t.float    "bitcoin_total_payout",      :default => 0.0
   end
 
   create_table "products", :force => true do |t|
