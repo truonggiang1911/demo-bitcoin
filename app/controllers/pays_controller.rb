@@ -3,7 +3,7 @@ class PaysController < ApplicationController
 	#config SECRET_TOKEN_APP for 3 environment
     SECRET_TOKEN_APP = "g8u4f4834grghu9hteruhe0ugldr88"
 	
-	before_filter :check_secret_token_callback, :only => [:pay_callback, :pay_cancel]
+	before_filter :check_secret_token_callback, :only => [:pay_callback, :pay_cancel, :pay_successful]
 	
 	def order_payment
 		@document = Document.find_by_id(params[:document_id])
@@ -99,9 +99,42 @@ class PaysController < ApplicationController
 
 	 end	
 
-	 # def pay_cancel
-	 # 	puts params.inpsect
-	 # end	
+	 def pay_cancel
+
+	 	puts "222 go to pay cancel"
+	 	puts params.inpsect
+	 	# return to page to notify cancel payment
+	 	# or page for reorder
+	 	order = params[:order]
+	 	if (order.present?)
+	 		redirect_to "/order_payment?document_id=#{order[:custom]}"
+	 	else
+	 		redirect_to "/"
+	 	end	
+	 end	
+
+
+	 def pay_successful
+	 	puts "222 go to pay successful"
+	 	puts params.inpsect
+	 	order = params[:order]
+
+	 	if (order.present? and order[:status] != "expired")
+	 		payment = Payment.new({
+ 				document_id: order[:custom],
+	 			signer_id: current_user.id,
+	 			payment_amount: order[:total_btc][:cents],
+	 			bitcoin_transaction_id: order[:transaction][:id],
+	 			bitcoint_receive_address: order[:receive_address],
+	 			bitcoin_order_id: order[:id],
+	 			bitcoin_status_order: order[:status]
+	 		})
+	 		payment.save
+	 		redirect_to "/pays/pay_thanks"
+	 	else
+	 		redirect_to "/pays/pay_not_successful"
+	 	end	
+	 end	
 
 
 	 private
