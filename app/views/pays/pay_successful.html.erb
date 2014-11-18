@@ -1,0 +1,5 @@
+<h2> Thanks payment! Successful.<h2>
+<% if @order.present? %>
+	<span>Total payment (cents): <%= @total_native %></span>
+	<span>Status of order payment: <%= @bitcoin_status_order %></span>
+<% end %>

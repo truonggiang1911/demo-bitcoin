@@ -21,9 +21,9 @@ class PaysController < ApplicationController
 	 					 	name: "test",
 	 						type: "buy_now", 
 	 						custom: document_id,
-	 						callback_url: "http://localhost:3000/pay_callback?secret=#{SECRET_TOKEN_APP}",
-	 						success_url: "http://localhost:3000/pay_successful?secret=#{SECRET_TOKEN_APP}",
-	 						cancel_url: "http://localhost:3000/pay_cancel?secret=#{SECRET_TOKEN_APP}",
+	 						callback_url: "http://54.173.42.13/pay_callback?secret=#{SECRET_TOKEN_APP}",
+	 						success_url: "http://54.173.42.13/pay_successful?secret=#{SECRET_TOKEN_APP}",
+	 						cancel_url: "http://54.173.42.13/pay_cancel?secret=#{SECRET_TOKEN_APP}",
 	 						auto_redirect: true,
 	 						auto_redirect_success: true,
 	 						auto_redirect_cancel: true,
@@ -40,6 +40,7 @@ class PaysController < ApplicationController
 	 	end	
 	 end
 
+	 # callback post json from API Coinbase
 	 def pay_callback
 	 	order = params[:order]
 	 	if (order.present? and order[:status] != "expired")
@@ -56,10 +57,8 @@ class PaysController < ApplicationController
 	 			bitcoin_status_order: order[:status]
 	 		})
 	 		payment.save
-	 		redirect_to "/pays/pay_thanks"
-	 	else
-	 		redirect_to "/pays/pay_not_successful"
 	 	end	
+	 	render :text => "OK"
 	 end	
 
 	 def pay_not_successful
@@ -82,26 +81,18 @@ class PaysController < ApplicationController
 
 
 	 def pay_successful
-	 	order = params[:order]
+	 	@order = params[:order]
 
-	 	if (order.present? and order[:status] != "expired")
-	 		payment = Payment.new({
- 				document_id: order[:custom],
-	 			signer_id: current_user.id,
-	 			payment_amount: order[:total_native][:cents],
-	 			bitcoin_total_btc: order[:total_btc][:cents],
-	 			bitcoin_total_native: order[:total_native][:cents],
-	 			bitcoin_total_payout: order[:total_payout][:cents],
-	 			bitcoin_transaction_id: order[:transaction][:id],
-	 			bitcoint_receive_address: order[:receive_address],
-	 			bitcoin_order_id: order[:id],
-	 			bitcoin_status_order: order[:status]
-	 		})
-	 		payment.save
-	 		redirect_to "/pays/pay_thanks"
-	 	else
-	 		redirect_to "/pays/pay_not_successful"
-	 	end	
+	 	# view to nofify payment is successful
+	 	# can list Order id
+	 	# Customer
+	 	# Total amount pay and some more follow the design view 
+	 	if @order.present?
+	 		@total_native = @order[:total_native][:cents]	
+	 		@bitcoin_status_order = @order[:status]
+	 		@bitcoin_transaction_id = @order[:transaction][:id]
+	 		#some more follow the design view
+	 	end
 	 end	
 
 

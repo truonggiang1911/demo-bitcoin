@@ -8,7 +8,7 @@ Listapp11::Application.routes.draw do
   get '/order_payment', controller: "pays", action: "order_payment"
   post '/pay_with_bitcoin', controller: "pays", action: "pay_with_bitcoin"
  
-  match '/pay_callback', controller: "pays", action: "pay_callback"
+  post '/pay_callback', controller: "pays", action: "pay_callback"
   
   match '/pay_cancel', controller: "pays", action: "pay_cancel"
   
