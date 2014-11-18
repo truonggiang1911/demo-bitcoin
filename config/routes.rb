@@ -10,9 +10,9 @@ Listapp11::Application.routes.draw do
  
   post '/pay_callback', controller: "pays", action: "pay_callback"
   
-  match '/pay_cancel', controller: "pays", action: "pay_cancel"
+  get '/pay_cancel', controller: "pays", action: "pay_cancel"
   
-  match '/pay_successful', controller: "pays", action: "pay_successful"
+  get '/pay_successful', controller: "pays", action: "pay_successful"
   
   get '/pays/pay_not_successful', controller: "pays", action: "pay_not_successful"
   get '/pays/pay_thanks', controller: "pays", action: "pay_thanks"

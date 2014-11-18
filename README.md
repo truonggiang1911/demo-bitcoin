@@ -1,3 +1,14 @@
+### Note for changed 22h56 pm - 18-11
+1. Change routes.rb
+	- post - pay_callback
+	- get  - pay_cancel - pay_successful
+
+2. Only save payment in Callback return by action post from API Coinbase	
+
+3. Successful payment
+	- Add view pay_successful to show some informations which are related with order, customer, payment account, status payment ...
+
+
 ### Getting Started - Set up account and verify secret token app
 
 1. Set up COINBASE_API_KEY and COINBASE_API_SECRET for 3 environmensts
